@@ -1,0 +1,4 @@
+#!/bin/bash
+set -euo pipefail
+echo "--- Killing docker-dind container"
+kubectl exec --container docker-dind $(hostname) /bin/kill 1

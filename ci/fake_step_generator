@@ -1,0 +1,49 @@
+#!/bin/bash
+set -eu
+
+cat <<YAML
+steps:
+  - name: "10 second sleep"
+    command: "sleep 10"
+    agents:
+      queue: dynamic
+
+  - name: "20 second sleep"
+    command: "sleep 20"
+    agents:
+      queue: dynamic
+
+  - name: "30 second sleep"
+    command: "sleep 30"
+    agents:
+      queue: dynamic
+
+  - name: "40 second sleep"
+    command: "sleep 40"
+    agents:
+      queue: dynamic
+
+  - name: "50 second sleep"
+    command: "sleep 50"
+    agents:
+      queue: dynamic
+
+  - wait
+
+  - block: "Test Block"
+    prompt: "Fill out the details for release"
+    fields:
+      - select: "Type"
+        key: "release-type"
+        default: "beta"
+        options:
+        - label: "Beta"
+          value: "beta"
+        - label: "Stable"
+          value: "stable"
+
+  - name: "5 second sleep"
+    command: "sleep 5"
+    agents:
+      queue: dynamic
+YAML

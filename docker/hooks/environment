@@ -1,0 +1,18 @@
+#!/bin/bash
+
+set -euo pipefail
+
+git config --global credential.helper "store --file=/root/.git-credentials"
+n=0
+until [ $n -ge 5 ]
+do
+  docker login -u $DOCKER_LOGIN_USER -p $DOCKER_LOGIN_PASSWORD && break
+  n=$[$n+1]
+  echo "Docker not ready!"
+  sleep 3
+done
+export BUILDKITE_DOCKER_DEFAULT_VOLUMES=/buildkite/builds:/buildkite/builds
+docker volume rm -f buildkite
+docker volume create --name=buildkite
+
+$(aws ecr get-login --no-include-email --region us-east-1)
